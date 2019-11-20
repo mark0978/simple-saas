@@ -1,0 +1,4 @@
+-r requirements.txt
+black
+pylint
+django-debug-toolbar==2.1
