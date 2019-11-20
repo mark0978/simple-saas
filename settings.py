@@ -17,32 +17,43 @@ from datetime import timedelta
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "&7us_y(k(ja$!s!+6jq6uo+wz2hs4)b^o!!345=u7_aiz8!5sh"
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "Change the Secret Key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get("DJANGO_DEBUG", 0))
 
-ALLOWED_HOSTS = ["*"]
+if DEBUG:
+    ALLOWED_HOSTS = ["*"]
+else:
+    ALLOWED_HOSTS = []
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    "saas",
-    "rest_framework.authtoken",
-    "rest_framework",
+    # Core Django
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Third party components
+    "rest_framework.authtoken",
+    "rest_framework",
+    #Application components
+    "saas",
 ]
+
+if DEBUG:
+    INSTALLED_APPS.extend([
+        'debug_toolbar',
+    ])
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -54,6 +65,15 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+if DEBUG:
+    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+    # For DjDT
+    INTERNAL_IPS = [
+        '127.0.0.1',
+    ]
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.TokenAuthentication",
@@ -64,7 +84,6 @@ REST_FRAMEWORK = {
 
 ROOT_URLCONF = "urls"
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMP_DIR = os.path.join(BASE_DIR, "templates")
 
 TEMPLATES = [
@@ -90,15 +109,13 @@ WSGI_APPLICATION = "uwsgis.application"
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "DEFAULT_STORAGE_ENGINE": "InnoDB",
-        "NAME": os.environ["DB_NAME"],
-        "USER": os.environ["DB_USER"],
-        "PASSWORD": os.environ["DB_PASSWD"],
-        "HOST": os.environ["DB_HOST"],
-        "PORT": "3306",
-    }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'saas',
+        'USER': os.environ['DJANGO_DB_USER'],
+        'PASSWORD': os.environ['DJANGO_DB_PASSWORD'],
+        'HOST': 'localhost',
+    },
 }
 
 

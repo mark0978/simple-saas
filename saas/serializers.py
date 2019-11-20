@@ -6,7 +6,7 @@ from .exceptions import CustomValidation
 from django.contrib.auth import authenticate
 from datetime import datetime, timedelta
 
-import helpers
+from . import helpers
 
 
 class LoginSerializer(serializers.Serializer):
@@ -174,7 +174,7 @@ class ResetPasswordSerializer(serializers.Serializer):
 
     def _send_password_reset_mail(self, activation_key):
         # TODO send activation mail here
-        print "ACTIVATION KEY : {}".format(activation_key)
+        print("ACTIVATION KEY : {}".format(activation_key))
 
     def validate(self, data):
         data = super(ResetPasswordSerializer, self).validate(data)
