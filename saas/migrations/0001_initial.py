@@ -17,54 +17,109 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Business',
+            name="Business",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('last_updated_on', models.DateTimeField(auto_now=True)),
-                ('is_active', models.BooleanField(default=True)),
-                ('api_key', models.CharField(max_length=50, null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("last_updated_on", models.DateTimeField(auto_now=True)),
+                ("is_active", models.BooleanField(default=True)),
+                ("api_key", models.CharField(max_length=50, null=True)),
             ],
         ),
         migrations.CreateModel(
-            name='BusinessTeamMember',
+            name="BusinessTeamMember",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('activation_key', models.CharField(max_length=36)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('last_updated_on', models.DateTimeField(auto_now=True)),
-                ('business', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='saas.Business')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("activation_key", models.CharField(max_length=36)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("last_updated_on", models.DateTimeField(auto_now=True)),
+                (
+                    "business",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="saas.Business"
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Plan',
+            name="Plan",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('description', models.CharField(blank=True, max_length=255, null=True)),
-                ('duration_days', models.IntegerField(default=15)),
-                ('usd_price', models.DecimalField(decimal_places=2, max_digits=6)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('last_updated_on', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                (
+                    "description",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
+                ("duration_days", models.IntegerField(default=15)),
+                ("usd_price", models.DecimalField(decimal_places=2, max_digits=6)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("last_updated_on", models.DateTimeField(auto_now=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Subscription',
+            name="Subscription",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('is_active', models.BooleanField(default=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('start_time', models.DateTimeField()),
-                ('end_time', models.DateTimeField()),
-                ('last_updated_on', models.DateTimeField(auto_now=True)),
-                ('business', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='saas.Business')),
-                ('plan', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='saas.Plan')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("is_active", models.BooleanField(default=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("start_time", models.DateTimeField()),
+                ("end_time", models.DateTimeField()),
+                ("last_updated_on", models.DateTimeField(auto_now=True)),
+                (
+                    "business",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="saas.Business"
+                    ),
+                ),
+                (
+                    "plan",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="saas.Plan"
+                    ),
+                ),
             ],
         ),
         migrations.AlterUniqueTogether(
-            name='businessteammember',
-            unique_together=set([('business', 'user')]),
+            name="businessteammember", unique_together=set([("business", "user")]),
         ),
     ]
